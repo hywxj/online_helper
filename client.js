@@ -1,21 +1,22 @@
 /**
- * 刷课连播 · 界面半边。
+ * 网课助手 · 界面半边。
  *
  * 注册为**左侧栏的一个入口**：侧栏多一个图标，点开就是中央面板——在里面填课程地址、
  * 启动监控、看实时进度，并管理站点翻页规则。
- * 与宿主半边的通信走 /dsh-autoplay 路由（见 index.js 的说明）。
+ * 与宿主半边的通信走 /online_helper 路由（见 index.js 的说明）。
  */
 window.__ModuleLoader__.load({
-  id: '@local/dsh-autoplay',
+  id: '@local/online_helper',
   factory(require) {
     const React = require('react');
     const h = React.createElement;
     const { useCallback, useEffect, useRef, useState } = React;
 
-    const STATUS_URL = '/dsh-autoplay/status';
+    const API_BASE = '/online_helper';
+    const STATUS_URL = API_BASE + '/status';
     /** 侧栏图标的 id，同时也是中央面板的 key——两者必须一致。 */
-    const PANEL_ID = 'autoplay';
-    const PANEL_LABEL = '刷课连播';
+    const PANEL_ID = 'online_helper';
+    const PANEL_LABEL = '网课助手';
 
     async function call(path, init) {
       const response = await fetch(path, init);
@@ -145,7 +146,7 @@ window.__ModuleLoader__.load({
       const onStart = useCallback(async () => {
         setBusy(true);
         setNotice(null);
-        const result = await postJson('/dsh-autoplay/start', { url });
+        const result = await postJson(API_BASE + '/start', { url });
         setNotice(
           result.ok
             ? { kind: 'ok', text: `已启动（生效规则 ${result.rules ?? 0} 条）。Chrome 正在打开课程页，首次使用请在那个窗口里登录。` }
@@ -158,7 +159,7 @@ window.__ModuleLoader__.load({
       const onStop = useCallback(async () => {
         setBusy(true);
         setNotice(null);
-        const result = await postJson('/dsh-autoplay/stop');
+        const result = await postJson(API_BASE + '/stop');
         setNotice(result.ok ? { kind: 'ok', text: '已停止监控。' } : { kind: 'error', text: result.error ?? '停止失败' });
         setBusy(false);
         refresh();
@@ -166,7 +167,7 @@ window.__ModuleLoader__.load({
 
       const onSaveRule = useCallback(async () => {
         setRuleNotice(null);
-        const result = await postJson('/dsh-autoplay/rules', { rule: ruleText });
+        const result = await postJson(API_BASE + '/rules', { rule: ruleText });
         if (result.ok) {
           setRuleNotice({ kind: 'ok', text: `已保存规则 ${result.id}（当前共 ${result.count} 条）。下次启动生效。` });
           setRuleText('');
@@ -179,7 +180,7 @@ window.__ModuleLoader__.load({
       const onDeleteRule = useCallback(
         async (id) => {
           setRuleNotice(null);
-          const result = await postJson('/dsh-autoplay/rules/delete', { id });
+          const result = await postJson(API_BASE + '/rules/delete', { id });
           setRuleNotice(result.ok ? { kind: 'ok', text: `已删除规则 ${id}。` } : { kind: 'error', text: result.error ?? '删除失败' });
           refresh();
         },
@@ -188,7 +189,7 @@ window.__ModuleLoader__.load({
 
       const onProbe = useCallback(async () => {
         setProbeText('探测中…');
-        const result = await postJson('/dsh-autoplay/probe');
+        const result = await postJson(API_BASE + '/probe');
         setProbeText(summarizeProbe(result));
       }, []);
 
@@ -197,7 +198,7 @@ window.__ModuleLoader__.load({
           setSpecText(null);
           return;
         }
-        const result = await call('/dsh-autoplay/spec').catch(() => null);
+        const result = await call(API_BASE + '/spec').catch(() => null);
         setSpecText(result?.text ? result.text : '读取规范失败。');
       }, [specText]);
 
@@ -250,7 +251,7 @@ window.__ModuleLoader__.load({
         h(
           'div',
           { className: 'cw-head' },
-          h('div', { className: 'cw-title' }, '刷课连播'),
+          h('div', { className: 'cw-title' }, '网课助手'),
           h('span', { className: 'cw-pill ' + (running ? 'is-on' : 'is-off') }, running ? '监控中' : state.starting ? '启动中' : '已停止'),
         ),
         h('div', { className: 'cw-desc' }, '自动播放课程视频，本节播完自动翻到下一节，并跳过习题。启动后会打开一个带调试端口的独立 Chrome。'),

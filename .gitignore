@@ -1,4 +1,4 @@
-# 运行时产物（默认落在 %USERPROFILE%\.dsh\course-watch\，但以防有人改到包里）
+# 运行时产物（默认落在 %USERPROFILE%\.dsh\online_helper\，但以防有人改到包里）
 state/
 *.log
 
@@ -13,3 +13,12 @@ Thumbs.db
 
 # 本地临时脚本（我自己调试时会用到 _xxx.mjs 这种命名）
 _*.mjs
+
+# 本机配置和认证信息
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+coverage/
+*.tgz

@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Course watch",
+    "title": "Online Helper",
     "description": "Opens Chrome with a debug port and keeps a course video playing, advancing to the next lesson and skipping exercises."
   },
-  "tab": "Course watch",
-  "title": "Course watch",
+  "tab": "Online Helper",
+  "title": "Online Helper",
   "desc": "Plays the course video and moves to the next lesson automatically when one finishes, skipping exercises. It opens a separate Chrome window with a debug port.",
   "placeholder": "Course video page URL, e.g. https://…/video/12345",
   "start": "Start watching",

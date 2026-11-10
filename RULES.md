@@ -16,7 +16,7 @@
 | 位置 | 用途 |
 |---|---|
 | 插件包内 `rules/*.json` | 内置规则，随插件发布，升级时被覆盖 |
-| `%USERPROFILE%\.dsh\dsh-autoplay\rules\*.json` | **你的规则**，不会被升级覆盖 |
+| `%USERPROFILE%\.dsh\online_helper\rules\*.json` | **你的规则**，不会被升级覆盖 |
 
 加载顺序：内置打底 → 你的规则按 `id` **覆盖或追加**。
 

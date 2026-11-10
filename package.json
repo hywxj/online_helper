@@ -1,10 +1,10 @@
 {
-  "name": "@local/dsh-autoplay",
+  "name": "@local/online_helper",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
   "type": "module",
-  "description": "Watch a course video page in Chrome and auto-advance to the next lesson when one finishes.",
+  "description": "Online Helper: a DeepSeek Harness plugin for course video playback and site rule management.",
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
@@ -15,20 +15,38 @@
     "index.js",
     "client.js",
     "cordis.patch.yml",
-    "lib/cdp.mjs",
-    "lib/watch.mjs",
-    "lib/chrome.mjs",
+    "lib/*.mjs",
     "rules/*.json",
     "RULES.md",
     "locale/*.json",
     "icon.svg"
   ],
   "dsh": {
-    "bundle": { "patch": "./cordis.patch.yml" },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
     "client": {
       "platform": "web",
       "immediately": true,
-      "inject": ["@deepseek-ai/dsh-client-ui-sidebar"]
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-sidebar"
+      ]
     }
+  },
+  "author": "hywxj <huwenju441@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hywxj/online_helper.git"
+  },
+  "homepage": "https://github.com/hywxj/online_helper#readme",
+  "bugs": {
+    "url": "https://github.com/hywxj/online_helper/issues"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node selftest.mjs && node --test",
+    "check": "node --check index.js && node --check client.js"
   }
 }
